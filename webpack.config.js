@@ -9,7 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+//const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 
 const NPM_TARGET = process.env.npm_lifecycle_event; //eslint-disable-line no-process-env
@@ -186,26 +186,39 @@ var config = {
             {
                 test: /\.scss$/,
                 use: [
-                    MiniCssExtractPlugin.loader,
-                    {
-                        loader: 'css-loader',
+                  "style-loader", // creates style nodes from JS strings
+                  "css-loader", // translates CSS into CommonJS
+                  {
+                    loader: "sass-loader", // compiles Sass to CSS, using Node Sass by default
+                    options: {
+                      includePaths: ['node_modules/compass-mixins/lib'],
                     },
-                    {
-                        loader: 'sass-loader',
-                        options: {
-                            includePaths: ['node_modules/compass-mixins/lib'],
-                        },
-                    },
+                  },
                 ],
+                //use: [
+                    //MiniCssExtractPlugin.loader,
+                    //{
+                        //loader: 'css-loader',
+                    //},
+                    //{
+                        //loader: 'sass-loader',
+                        //options: {
+                            //includePaths: ['node_modules/compass-mixins/lib'],
+                        //},
+                    //},
+                //],
             },
             {
                 test: /\.css$/,
                 use: [
-                    MiniCssExtractPlugin.loader,
-                    {
-                        loader: 'css-loader',
-                    },
+                  "css-loader",
                 ],
+                //use: [
+                    //MiniCssExtractPlugin.loader,
+                    //{
+                        //loader: 'css-loader',
+                    //},
+                //],
             },
             {
                 test: /\.(png|eot|tiff|svg|woff2|woff|ttf|gif|mp3|jpg)$/,
@@ -264,10 +277,10 @@ var config = {
         new webpack.DefinePlugin({
             COMMIT_HASH: JSON.stringify(childProcess.execSync('git rev-parse HEAD || echo dev').toString()),
         }),
-        new MiniCssExtractPlugin({
-            filename: '[name].[contentHash].css',
-            chunkFilename: '[name].[contentHash].css',
-        }),
+        //new MiniCssExtractPlugin({
+            //filename: '[name].[contentHash].css',
+            //chunkFilename: '[name].[contentHash].css',
+        //}),
     ],
 };
 
